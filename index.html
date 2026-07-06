@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MemCo: Memory-Centric Collaboration for Generalizing LLM Agents to Unseen Environments.">
+  <title>MemCo | Memory-Centric Collaboration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="MemCo home">MEMCO<span>.</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#implementation">Implementation</a>
+    </nav>
+    <a class="header-link" href="assets/memco-paper.pdf">Paper <span aria-hidden="true">&#8599;</span></a>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-meta"><span>LLM Agents</span><span>Collaborative Memory</span><span>Unseen Environments</span></div>
+      <h1>MemCo: Memory-Centric Collaboration for Generalizing LLM Agents to Unseen Environments</h1>
+      <p class="authors">
+        <strong>Siyan Liu<sup>1,*</sup></strong>, <strong>Xinting Liao<sup>1,2,*</sup></strong>,
+        <strong>Holger R. Roth<sup>3</sup></strong>, <strong>Xiaoxiao Li<sup>1,2</sup></strong>
+      </p>
+      <p class="affiliations"><sup>1</sup>University of British Columbia &nbsp; <sup>2</sup>Vector Institute &nbsp; <sup>3</sup>NVIDIA</p>
+      <div class="hero-links">
+        <a class="primary-link" href="assets/memco-paper.pdf">Read the paper <span aria-hidden="true">&#8599;</span></a>
+        <a href="https://github.com/SYannL/NVFlare/tree/memco_collab_api">GitHub repository <span aria-hidden="true">&#8599;</span></a>
+        <a href="https://github.com/NVIDIA/NVFlare">Built with NVIDIA FLARE <span aria-hidden="true">&#8599;</span></a>
+      </div>
+      <p class="lede">Agents keep concrete experience close, share only what transfers, and retrieve both at the moment a decision is made.</p>
+    </section>
+
+    <section class="system" id="method">
+      <div class="section-heading">
+        <p class="kicker">Interactive architecture</p>
+        <h2>Local grounding. Global procedure. One decisive context.</h2>
+        <p>Switch modes to follow how trajectories become shared workflow memory, then return as grounded decision support in an unseen environment.</p>
+      </div>
+
+      <div class="mode-switch" role="group" aria-label="Architecture mode">
+        <button class="mode-button active" data-mode="train" aria-pressed="true">Memory collaboration</button>
+        <button class="mode-button" data-mode="infer" aria-pressed="false">Adaptive inference</button>
+      </div>
+
+      <div class="architecture" data-mode="train">
+        <div class="flow-status" aria-live="polite">
+          <span class="status-index">01</span>
+          <div><strong>Construct local graph memory</strong><p>Outcome-annotated trajectories preserve actions, failures, corrections, and scene grounding.</p></div>
+        </div>
+
+        <div class="diagram" aria-label="Animated diagram of the MemCo architecture">
+          <div class="client-column">
+            <article class="agent agent-a" data-agent="A">
+              <span class="agent-label">Client 01</span><strong>Kitchen agent</strong>
+              <div class="mini-graph"><i></i><i></i><i></i><i></i><b></b><b></b><b></b></div>
+              <small>Local graph <em>M<sub>1</sub><sup>l</sup></em></small>
+            </article>
+            <article class="agent agent-b" data-agent="B">
+              <span class="agent-label">Client 02</span><strong>Bedroom agent</strong>
+              <div class="mini-graph"><i></i><i></i><i></i><i></i><b></b><b></b><b></b></div>
+              <small>Local graph <em>M<sub>2</sub><sup>l</sup></em></small>
+            </article>
+            <article class="agent agent-c" data-agent="C">
+              <span class="agent-label">Client 03</span><strong>Bathroom agent</strong>
+              <div class="mini-graph"><i></i><i></i><i></i><i></i><b></b><b></b><b></b></div>
+              <small>Local graph <em>M<sub>3</sub><sup>l</sup></em></small>
+            </article>
+          </div>
+
+          <div class="transport" aria-hidden="true">
+            <span class="rail rail-a"></span><span class="rail rail-b"></span><span class="rail rail-c"></span>
+            <span class="packet packet-a">workflow</span><span class="packet packet-b">repair</span><span class="packet packet-c">precondition</span>
+            <span class="return-packet">decision context</span>
+          </div>
+
+          <article class="global-bank">
+            <span class="server-label">NVFlare server</span>
+            <h3>Global workflow memory</h3>
+            <p>Abstract, align, and promote reusable knowledge. Raw trajectories never leave the client.</p>
+            <div class="workflow-stack">
+              <span>Locate &#8594; Prepare &#8594; Act</span>
+              <span>Failure &#8594; Diagnose &#8594; Repair</span>
+              <span>Verify precondition before action</span>
+            </div>
+            <div class="bank-stats"><span><b>cross-agent</b> support</span><span><b>scene-free</b> abstraction</span></div>
+          </article>
+
+          <article class="unseen-agent">
+            <span class="agent-label">Unseen environment</span>
+            <strong>New task agent</strong>
+            <div class="context-slots"><span>local grounding</span><span>global workflow</span><span>failure caution</span></div>
+            <small>AdaptiveRoute(<em>M<sup>l</sup>, M<sup>g</sup></em>)</small>
+          </article>
+        </div>
+
+        <div class="stage-control">
+          <button id="previous-stage" aria-label="Previous stage">&#8592;</button>
+          <div class="stage-dots" role="group" aria-label="Select animation stage">
+            <button class="stage-dot active" data-stage="0" aria-label="Stage 1"></button>
+            <button class="stage-dot" data-stage="1" aria-label="Stage 2"></button>
+            <button class="stage-dot" data-stage="2" aria-label="Stage 3"></button>
+          </div>
+          <button id="next-stage" aria-label="Next stage">&#8594;</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="principles">
+      <article><span>01</span><h3>Local memory construction</h3><p>Merge outcome-annotated episode graphs and induce actionable patterns without losing environment-specific state.</p></article>
+      <article><span>02</span><h3>Memory collaboration</h3><p>Promote candidates only when confidence, frequency, specificity, and negative evidence support transfer.</p></article>
+      <article><span>03</span><h3>Adaptive memory support</h3><p>Route local grounding, global workflows, and failure reflection against the current goal, state, and available actions.</p></article>
+    </section>
+
+    <section class="results" id="results">
+      <div class="section-heading compact">
+        <p class="kicker">Main results</p>
+        <h2>Shared experience without trajectory contamination.</h2>
+        <p>GPT-4o-mini results reported in the paper. MemCo is evaluated across fact verification, symbolic planning, and embodied household interaction.</p>
+      </div>
+      <div class="result-grid">
+        <article class="result-feature"><span>FEVER accuracy</span><strong>72.88<small>%</small></strong><p>with 2.42 average steps</p></article>
+        <article><span>PDDL accuracy</span><strong>57.08<small>%</small></strong><p>across planning domains</p></article>
+        <article><span>ALFWorld unseen</span><strong>50.00<small>%</small></strong><p>21.75 average steps</p></article>
+        <article><span>Memory scopes</span><strong>L + G</strong><p>local grounding plus global workflow</p></article>
+      </div>
+      <p class="result-note">Exact values depend on backbone and benchmark protocol. See the paper for all baselines, seen/unseen partitions, and ablations.</p>
+    </section>
+
+    <section class="implementation" id="implementation">
+      <div class="implementation-copy">
+        <p class="kicker">Open implementation</p>
+        <h2>Federated memory orchestration with NVIDIA FLARE.</h2>
+        <p>The open implementation uses NVFlare's high-level Collab API. Client functions are published with <code>@collab.publish</code>; the server lifecycle is expressed with <code>@collab.main</code>. Sequential training accumulates global memory across domains, followed by frozen parallel evaluation.</p>
+        <div class="implementation-links">
+          <a href="https://github.com/SYannL/NVFlare/tree/memco_collab_api">Explore the MemCo branch <span aria-hidden="true">&#8599;</span></a>
+          <a href="https://github.com/NVIDIA/NVFlare">Visit NVIDIA FLARE <span aria-hidden="true">&#8599;</span></a>
+        </div>
+      </div>
+      <div class="code-window" aria-label="Collab API implementation example">
+        <div class="code-bar"><span></span><span></span><span></span><b>research/memco/job.py</b></div>
+        <pre><code><mark>@collab.publish</mark>
+def train(global_memory, config):
+    return run_domain(
+        mode="train",
+        memory=global_memory,
+    )
+
+<mark>@collab.main</mark>
+def memco_flow():
+    for client in clients:
+        result = client.train(global_memory)
+        global_memory = result["global_memory"]
+
+    clients.evaluate(final_global)</code></pre>
+      </div>
+    </section>
+
+    <section class="citation">
+      <p class="kicker">Citation</p>
+      <div class="citation-line"><p>MemCo citation details will be added with the proceedings release.</p><button id="copy-citation" data-copy="Liu, S., Liao, X., Roth, H. R., and Li, X. MemCo: Memory-Centric Collaboration for Generalizing LLM Agents to Unseen Environments.">Copy plain citation</button></div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="wordmark" href="#top">MEMCO<span>.</span></a>
+    <p>Memory-centric collaboration for generalizing LLM agents.</p>
+    <p>UBC &middot; Vector Institute &middot; NVIDIA</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
